@@ -1,83 +1,93 @@
 #include <iostream>
 #include <fstream>
-#include <string>
 using namespace std;
 
-struct Nilai {
-    float mtk;
-    float bind;
-    float bing;
-    float ipa;
+struct nilai {
+    float Mtk;
+    float BIn;
+    float Big;
+    float IPA;
 };
 
-struct Siswa {
+struct siswa {
     string nama;
-    string nisn;
+    string NISN;
     string jurusan;
-    Nilai nilai;
+    nilai Nilai;
 };
 
-
-float hitungNilaiAkhir(Nilai n) {
-    float hasil;
-    hasil = (n.mtk * 0.4) + (n.ipa * 0.3) + (n.bind * 0.2) + (n.bing * 0.2);
-    return hasil;
+float nilaiAkhir(nilai n) {
+    return (n.Mtk * 0.4) + (n.IPA * 0.3) + (n.BIn * 0.2) + (n.Big * 0.1);
 }
 
-void tambahData() {
-    ofstream file;
-    file.open("siswa.txt", ios::app);
-    Siswa s;
-
-    cout << "\nMasukkan nama: ";
+void tambahDataSiswa() {
+    ofstream file("siswa.txt", ios::app);
+    siswa s;
+    cin.ignore();
+    cout << "\nMasukkan Nama: ";
     getline(cin, s.nama);
     cout << "Masukkan NISN: ";
-    getline(cin, s.nisn);
-    cout << "Masukkan jurusan: ";
+    getline(cin, s.NISN);
+    cout << "Masukkan Jurusan: ";
     getline(cin, s.jurusan);
-
     cout << "Nilai Matematika: ";
-    cin >> s.nilai.mtk;
+    cin >> s.Nilai.Mtk;
     cout << "Nilai Bahasa Indonesia: ";
-    cin >> s.nilai.bind;
+    cin >> s.Nilai.BIn;
     cout << "Nilai Bahasa Inggris: ";
-    cin >> s.nilai.bing;
+    cin >> s.Nilai.Big;
     cout << "Nilai IPA: ";
-    cin >> s.nilai.ipa;
-    cin.ignore();
-
-    file << s.nama << " " << s.nisn << " " << s.jurusan << " "
-         << s.nilai.mtk << " " << s.nilai.bind << " " << s.nilai.bing << " " << s.nilai.ipa << endl;
-
+    cin >> s.Nilai.IPA;
+    file << s.nama << endl
+         << s.NISN << endl
+         << s.jurusan << endl
+         << s.Nilai.Mtk << " " << s.Nilai.BIn << " " << s.Nilai.Big << " " << s.Nilai.IPA << endl;
     file.close();
-    cout << "Data berhasil disimpan!\n";
+    cout << "Data berhasil disimpan\n";
 }
+
+void tampilDataSiswa() {
+    ifstream file("siswa.txt");
+    if (!file.is_open()) {
+        cout << "File belum ada atau belum ada data.\n";
+        return;
+    }
+    siswa s;
+    cout << "\n===== DATA SISWA =====\n";
+    while (getline(file, s.nama)) {
+        getline(file, s.NISN);
+        getline(file, s.jurusan);
+        file >> s.Nilai.Mtk >> s.Nilai.BIn >> s.Nilai.Big >> s.Nilai.IPA;
+        file.ignore();
+        cout << "Nama     : " << s.nama << endl;
+        cout << "NISN     : " << s.NISN << endl;
+        cout << "Jurusan  : " << s.jurusan << endl;
+        cout << "Nilai Akhir : " << nilaiAkhir(s.Nilai) << endl;
+        cout << "------------------------\n";
+    }
+    file.close();
+}
+
 
 int main() {
     int pilih;
-
     do {
         cout << "\n===== MENU DATA SISWA =====\n";
         cout << "1. Tambah Data Siswa\n";
-        cout << "2. Tampilkan Semua Data\n";
-        cout << "3. Cari Data Siswa\n";
-        cout << "4. Keluar\n";
-        cout << "Pilih menu (1-4): ";
+        cout << "2. Tampilkan Data Siswa\n";
+        cout << "3. Cari Siswa Berdasarkan NISN\n";
+        cout << "4. Tampilkan Ranking\n";
+        cout << "5. Keluar\n";
+        cout << "Pilih menu (1-5): ";
         cin >> pilih;
-        cin.ignore();
-
-        if (pilih == 1)
-            tambahData();
-        else if (pilih == 2)
-            tampilData();
-        else if (pilih == 3)
-            cariSiswa();
-        else if (pilih == 4)
-            cout << "Program selesai.\n";
-        else
-            cout << "Pilihan tidak ada!\n";
-
-    } while (pilih != 4);
-
+        switch (pilih) {
+            case 1: tambahDataSiswa(); break;
+            case 2: tampilDataSiswa(); break;
+            case 3: cariSiswa(); break;
+            case 4: ranking(); break;
+            case 5: cout << "Keluar dari program...\n"; break;
+            default: cout << "Pilihan tidak valid!\n";
+        }
+    } while (pilih != 5);
     return 0;
 }
