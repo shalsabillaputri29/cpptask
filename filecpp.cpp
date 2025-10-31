@@ -169,6 +169,7 @@ void ranking() {
 }
 
 int main() {
+    //iputimutttttttttttt
     //wildansep
     int pilih;
     do {
@@ -194,4 +195,5 @@ int main() {
 
     return 0;
 }
+
 
