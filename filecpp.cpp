@@ -169,6 +169,7 @@ void ranking() {
 }
 
 int main() {
+    //wildansep
     int pilih;
     do {
         cout << "\n===== MENU DATA SISWA =====\n";
@@ -193,3 +194,4 @@ int main() {
 
     return 0;
 }
+
